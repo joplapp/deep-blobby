@@ -6,7 +6,6 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 #include <glog/logging.h>
-#include "blobby_interface.hpp"
 #include "prettyprint.hpp"
 
 namespace dqn {

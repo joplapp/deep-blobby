@@ -1,29 +1,33 @@
+
 #include "blobby_interface.hpp"
 
 
-std::string action_to_string(Action a) {
-    static std::string tmp_action_to_string[] = {
-            "NOOP"
-            ,"LEFT"
-            ,"RIGHT"
-            ,"UP"
-            ,"RESET"
-            ,"RANDOM"
-    };
-    assert (a >= 0 && a <= 6);
-    return tmp_action_to_string[a];
-}
-
-
-
+BlobbyInterface::BlobbyInterface() {}
 BlobbyInterface::~BlobbyInterface() {}
 
-BlobbyInterface::BlobbyInterface(){
+reward_t BlobbyInterface::act(Action action) {
+    return 0;
+}
 
-};
-void BlobbyInterface::connect(){
+bool BlobbyInterface::game_over() {
+    return true;
+}
 
-};
-void BlobbyInterface::getMinimalActionSet(){
+void BlobbyInterface::reset_game() {}
+void BlobbyInterface::connect() {}
 
-};
+ActionVect BlobbyInterface::getLegalActionSet() {
+    return ActionVect {
+        PLAYER_NOOP,
+        PLAYER_LEFT,
+        PLAYER_RIGHT,
+        PLAYER_UP,
+        PLAYER_RESET
+    };
+}
+
+int BlobbyInterface::getFrameNumber() {}
+
+int BlobbyInterface::getEpisodeFrameNumber() {}
+
+const BlobbyScreen& BlobbyInterface::getScreen() {}
