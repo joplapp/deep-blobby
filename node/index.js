@@ -18,6 +18,11 @@ var ioF = socket(httpF);
 ioC.on('connection', function(socket){
   console.log('a user connected');
   attachMovementEvents(socket)
+
+  socket.on('get frame', function(){
+    drawGame()
+    socket.emit('frame', JSON.stringify(getPixelArray()))
+  })
 });
 
 httpC.listen(3001, function(){
@@ -55,7 +60,8 @@ function attachMovementEvents(socket){
     stateManager.currentState.run()
 
     if(frontConnections.length){
-      var dataUrl = drawGame()
+      drawGame()
+      var dataUrl = getDataUrl()
       frontConnections.forEach(function(socket){
         socket.emit('canvas', dataUrl)
       })

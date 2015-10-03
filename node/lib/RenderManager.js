@@ -129,25 +129,30 @@ function drawGame()
     canvas.drawImage(fontImg[10], 700, 20);
   else if(servingPlayer == LEFT_PLAYER)
     canvas.drawImage(fontImg[10], 20, 20);*/
+}
 
-  var dataUrl = canvas.toDataURL()
-  return dataUrl;
+function getDataUrl(){
+  return canvas.toDataURL();
+}
 
-  var fs = require('fs')
-    , out = fs.createWriteStream(__dirname + '/text.png')
-    , stream = canvas.pngStream();
+var pixelArray = []  // reuse array
+function getPixelArray(){
+  var data = ctx.getImageData(0,0, canvas.width, canvas.height);
+  
+  // drop alpha values
+  for(var i = 0; i<data.length; i+=4){
+    pixelArray[i*3] = data[i*4];
+    pixelArray[i*3+1] = data[i*4+1];
+    pixelArray[i*3+2] = data[i*4+2];
+  }
 
-  stream.on('data', function(chunk){
-    out.write(chunk);
-  });
-
-  stream.on('end', function(){
-    console.log('saved png');
-  });
+  return pixelArray;
 }
 
 GLOBAL.drawGame = drawGame
 GLOBAL.drawMenu = drawMenu
 GLOBAL.drawWin = drawWin
+GLOBAL.getPixelArray = getPixelArray
+GLOBAL.getDataUrl = getDataUrl
 
 module.exports = RenderManager
