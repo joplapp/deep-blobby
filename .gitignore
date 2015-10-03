@@ -58,6 +58,14 @@ node_modules
 *.out
 *.app
 
+# Cmake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
 # -------------------------------------------------------------- Python
 # Byte-compiled / optimized / DLL files
 __pycache__/

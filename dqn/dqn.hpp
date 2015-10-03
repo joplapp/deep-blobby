@@ -6,7 +6,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <vector>
-//#include <ale_interface.hpp>
+#include "blobby_interface.hpp"
 #include <boost/functional/hash.hpp>
 #include <boost/optional.hpp>
 #include <caffe/caffe.hpp>

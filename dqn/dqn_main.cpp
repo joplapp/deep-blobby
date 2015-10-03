@@ -31,46 +31,6 @@ double CalculateEpsilon(const int iter) {
 
 
 /**
-   This class interfaces ALE with external code for controlling agents.
- */
-class ALEInterface {
-public:
-  ALEInterface();
-  ~ALEInterface();
-
-  // Resets the Atari and loads a game. After this call the game
-  // should be ready to play. This is necessary after changing a
-  // setting for the setting to take effect.
-  void loadROM(std::string rom_file);
-
-  // Applies an action to the game and returns the reward. It is the
-  // user's responsibility to check if the game has ended and reset
-  // when necessary - this method will keep pressing buttons on the
-  // game over screen.
-  reward_t act(Action action);
-
-  // Indicates if the game has ended.
-  bool game_over();
-
-  // Resets the game, but not the full system.
-  void reset_game();
-
-  // Returns the vector of legal actions. This should be called only
-  // after the rom is loaded.
-  ActionVect getLegalActionSet();
-
-  // Returns the vector of the minimal set of actions needed to play
-  // the game.
-  ActionVect getMinimalActionSet();
-
-  // Returns the current game screen
-  const int &getScreen();
-
-
- };
-
-
-/**
  * Play one episode and return the total score
  */
 double PlayOneEpisode(
