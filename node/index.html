@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>deep blobby</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on('canvas', function(data){
+
+            var canvas = document.getElementById('canvas')
+            canvas.src = data
+            console.log(data)
+        })
+
+        var dir = ''
+        document.onkeydown = function(key){
+            if(event.keyCode == 65) {
+                dir = 'LEFT'
+            } else if(event.keyCode == 68) {
+                dir = 'RIGHT'
+            } else if(event.keyCode == 87) {
+                dir = 'UP'
+            }
+        }
+        document.onkeyup = function(){
+            dir = ''
+        }
+
+        function move(){
+            socket.emit('act', dir)
+        }
+
+        setInterval(move, 15)
+    </script>
+</head>
+<body>
+
+<img id="canvas">
+
+</img>
+</body>
+</html>
