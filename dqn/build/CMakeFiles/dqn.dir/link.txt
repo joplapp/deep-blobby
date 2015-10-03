@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -O3 -march=native    CMakeFiles/dqn.dir/dqn_main.cpp.o CMakeFiles/dqn.dir/dqn.cpp.o  -o dqn  -Lcaffe/build/lib -rdynamic -lcaffe -lglog -lgflags -lale -lSDL -lSDL_gfx -lSDL_image -lSDLmain -Wl,-rpath,caffe/build/lib 
