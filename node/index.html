@@ -7,9 +7,14 @@
     <script>
         var socket = io();
         socket.on('canvas', function(data){
-
+            var parsed = JSON.parse(data)
             var canvas = document.getElementById('canvas')
-            canvas.src = data
+            canvas.src = parsed.data
+
+            var left = document.getElementById('left')
+            left.innerHTML = parsed.leftScore
+            var right = document.getElementById('right')
+            right.innerHTML = parsed.rightScore
         })
 
         var dir = ''
@@ -30,7 +35,7 @@
             socket.emit('act', dir)
         }
 
-        setInterval(move, 15)
+        setInterval(move, 16)
     </script>
 </head>
 <body>
@@ -38,5 +43,7 @@
 <img id="canvas">
 
 </img>
+<div id="left"></div>
+<div id="right"></div>
 </body>
 </html>

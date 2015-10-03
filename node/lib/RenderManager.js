@@ -138,7 +138,7 @@ function getDataUrl(){
 var pixelArray = []  // reuse array
 function getPixelArray(){
   var data = ctx.getImageData(0,0, canvas.width, canvas.height);
-  
+
   // drop alpha values
   for(var i = 0; i<data.length; i+=4){
     pixelArray[i*3] = data[i*4];

@@ -16,6 +16,8 @@ var rightHitcount = 0;
 var servingPlayer = -1;
 var playerwin = -1;
 
+var MAX_SCORE = 999999; // game never ends
+
 ballDown = false;
 
 function resetRulevars()
@@ -132,15 +134,17 @@ function step()
     reset(servingPlayer);
   }
 
-  if (leftScore >= 15 && leftScore >= rightScore + 2)
+  if (leftScore >= MAX_SCORE && leftScore >= rightScore + 2)
   {
     playerwin = LEFT_PLAYER;
   }
-  if (rightScore >= 15 && rightScore >= leftScore + 2)
+  if (rightScore >= MAX_SCORE && rightScore >= leftScore + 2)
   {
     playerwin = RIGHT_PLAYER;
   }
 
+  GLOBAL.rightScore = rightScore
+  GLOBAL.leftScore = leftScore
   return playerwin;
 }
 

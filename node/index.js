@@ -63,7 +63,11 @@ function attachMovementEvents(socket){
       drawGame()
       var dataUrl = getDataUrl()
       frontConnections.forEach(function(socket){
-        socket.emit('canvas', dataUrl)
+        socket.emit('canvas', JSON.stringify({
+          data: dataUrl,
+          leftScore: leftScore,
+          rightScore: rightScore
+        }))
       })
     }
     resetPlayerKeys()
