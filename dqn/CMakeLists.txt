@@ -3,15 +3,14 @@ project(dqn)
 
 option(CPU_ONLY "Use CPU only for Caffe" ON)
 option(USE_CUDNN "Use cuDNN for Caffe" OFF)
-#option(USE_SDL "Use SDL for ALE" ON)
 
-set(CAFFE "../caffe/")
+set(CAFFE ~/dqn/dqn/caffe/)
 
 include_directories(${CAFFE}include)
 include_directories(${CAFFE}build/src)
-#include_directories(~/ale_0.4.4/ale_0_4/src)
+include_directories(/usr/include/hdf5/serial/) # fix for hdf5 in ubuntu
 link_directories(${CAFFE}build/lib)
-#link_directories(~/ale_0.4.4/ale_0_4)
+
 if(USE_CUDNN)
   link_directories(~/cudnn-6.5-linux-R1)
 endif()

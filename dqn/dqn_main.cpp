@@ -1,8 +1,8 @@
 #include <cmath>
 #include <iostream>
-//#include <ale_interface.hpp>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
+#include "blobby_interface.hpp"
 #include "prettyprint.hpp"
 #include "dqn.hpp"
 
@@ -34,24 +34,24 @@ double CalculateEpsilon(const int iter) {
  * Play one episode and return the total score
  */
 double PlayOneEpisode(
-    ALEInterface& ale,
+    BlobbyInterface& blobby,
     dqn::DQN& dqn,
     const double epsilon,
     const bool update) {
-  //assert(!ale.game_over());
+  assert(!blobby.game_over());
   std::deque<dqn::FrameDataSp> past_frames;
   auto total_score = 0.0;
-  for (auto frame = 0; !ale.game_over(); ++frame) {
+  for (auto frame = 0; !blobby.game_over(); ++frame) {
     std::cout << "frame: " << frame << std::endl;
-    const auto current_frame = dqn::PreprocessScreen(ale.getScreen());
+    const auto current_frame = dqn::PreprocessScreen(blobby.getScreen());
     if (FLAGS_show_frame) {
       std::cout << dqn::DrawFrame(*current_frame) << std::endl;
     }
     past_frames.push_back(current_frame);
     if (past_frames.size() < dqn::kInputFrameCount) {
       // If there are not past frames enough for DQN input, just select NOOP
-      for (auto i = 0; i < FLAGS_skip_frame + 1 && !ale.game_over(); ++i) {
-        total_score += ale.act(PLAYER_A_NOOP);
+      for (auto i = 0; i < FLAGS_skip_frame + 1 && !blobby.game_over(); ++i) {
+        total_score += blobby.act(PLAYER_NOOP);
       }
     } else {
       if (past_frames.size() > dqn::kInputFrameCount) {
@@ -61,9 +61,9 @@ double PlayOneEpisode(
       std::copy(past_frames.begin(), past_frames.end(), input_frames.begin());
       const auto action = dqn.SelectAction(input_frames, epsilon);
       auto immediate_score = 0.0;
-      for (auto i = 0; i < FLAGS_skip_frame + 1 && !ale.game_over(); ++i) {
+      for (auto i = 0; i < FLAGS_skip_frame + 1 && !blobby.game_over(); ++i) {
         // Last action is repeated on skipped frames
-        immediate_score += ale.act(action);
+        immediate_score += blobby.act(action);
       }
       total_score += immediate_score;
       // Rewards for DQN are normalized as follows:
@@ -74,13 +74,13 @@ double PlayOneEpisode(
               immediate_score /= std::abs(immediate_score);
       if (update) {
         // Add the current transition to replay memory
-        const auto transition = ale.game_over() ?
+        const auto transition = blobby.game_over() ?
             dqn::Transition(input_frames, action, reward, boost::none) :
             dqn::Transition(
                 input_frames,
                 action,
                 reward,
-                dqn::PreprocessScreen(ale.getScreen()));
+                dqn::PreprocessScreen(blobby.getScreen()));
         dqn.AddTransition(transition);
         // If the size of replay memory is enough, update DQN
         if (dqn.memory_size() > FLAGS_memory_threshold) {
@@ -89,7 +89,7 @@ double PlayOneEpisode(
       }
     }
   }
-  ale.reset_game();
+  blobby.reset_game();
   return total_score;
 }
 
@@ -105,13 +105,13 @@ int main(int argc, char** argv) {
     caffe::Caffe::set_mode(caffe::Caffe::CPU);
   }
 
-  ALEInterface ale(FLAGS_gui);
+  BlobbyInterface blobby();
 
   // Load the ROM file
-  ale.loadROM(FLAGS_rom);
+  blobby.connect();
 
   // Get the vector of legal actions
-  const auto legal_actions = ale.getMinimalActionSet();
+  const auto legal_actions = blobby.getMinimalActionSet();
 
   dqn::DQN dqn(legal_actions, FLAGS_solver, FLAGS_memory, FLAGS_gamma);
   dqn.Initialize();
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
     for (auto i = 0; i < FLAGS_repeat_games; ++i) {
       std::cout << "game: " << i << std::endl;
       const auto score =
-          PlayOneEpisode(ale, dqn, FLAGS_evaluate_with_epsilon, false);
+          PlayOneEpisode(blobby, dqn, FLAGS_evaluate_with_epsilon, false);
       std::cout << "score: " << score << std::endl;
       total_score += score;
     }
@@ -138,10 +138,10 @@ int main(int argc, char** argv) {
   for (auto episode = 0;; episode++) {
     std::cout << "episode: " << episode << std::endl;
     const auto epsilon = CalculateEpsilon(dqn.current_iteration());
-    PlayOneEpisode(ale, dqn, epsilon, true);
+    PlayOneEpisode(blobby, dqn, epsilon, true);
     if (dqn.current_iteration() % 10 == 0) {
       // After every 10 episodes, evaluate the current strength
-      const auto eval_score = PlayOneEpisode(ale, dqn, 0.05, false);
+      const auto eval_score = PlayOneEpisode(blobby, dqn, 0.05, false);
       std::cout << "evaluation score: " << eval_score << std::endl;
     }
   }

@@ -111,7 +111,7 @@ private:
 /**
  * Preprocess an ALE screen (downsampling & grayscaling)
  */
-FrameDataSp PreprocessScreen(const int& raw_screen);
+FrameDataSp PreprocessScreen(const BlobbyScreen& raw_screen);
 
 /**
  * Draw a frame as a string

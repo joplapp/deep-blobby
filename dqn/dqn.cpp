@@ -6,6 +6,7 @@
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 #include <glog/logging.h>
+#include "blobby_interface.hpp"
 #include "prettyprint.hpp"
 
 namespace dqn {
@@ -71,7 +72,7 @@ uint8_t PixelToGrayscale(const pixel_t pixel) {
   return RGBToGrayscale(PixelToRGB(pixel));
 }
 
-FrameDataSp PreprocessScreen(const ALEScreen& raw_screen) {
+FrameDataSp PreprocessScreen(const BlobbyScreen& raw_screen) {
   assert(raw_screen.width() == kRawFrameWidth);
   assert(raw_screen.height() == kRawFrameHeight);
   const auto raw_pixels = raw_screen.getArray();
