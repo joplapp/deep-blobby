@@ -11,7 +11,7 @@ The code base was hacked during hackZurich 2015 by Boyan Beronov, Johannes Plapp
 
 The architecture is depicte below:
 
-![Architecture](/Architecture.png)
+![Architecture](/Architecture.png?raw=True)
 
 Blobby Volley 2 Web is capsuled in [node.js](https://nodejs.org/en/). 
 
