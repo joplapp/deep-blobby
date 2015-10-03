@@ -9,6 +9,10 @@ The code base was hacked during hackZurich 2015 by Boyan Beronov, Johannes Plapp
 
 ## Architecture
 
+The architecture is depicte below:
+
+![Architecture](Architecture.png)
+
 Blobby Volley 2 Web is capsuled in [node.js](https://nodejs.org/en/). 
 
 A [socket.io](http://socket.io)-based game interface receives action messages (corresponding to keystrokes in the original game) and passes them on to the game engine. An output engine provides Data-URL that can be used with, e.g., any modern browser to display the game in realtime. 
@@ -25,5 +29,3 @@ URL: http://www.nature.com/nature/journal/v518/n7540/abs/nature14236.html
 
 [2]
 >Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D., & Riedmiller, M. (2013). Playing atari with deep reinforcement learning. arXiv preprint arXiv:1312.5602. URL: http://arxiv.org/abs/1312.5602
-
-###
