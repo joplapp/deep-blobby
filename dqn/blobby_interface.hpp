@@ -13,6 +13,7 @@ static const std::string Version = "0.1";
 typedef int reward_t;
 typedef unsigned char pixel_t;
 
+/** --------------------------------------------- Actions allowed in Blobby. */
 enum Action {
     PLAYER_NOOP  = 0,
     PLAYER_LEFT  = 1,
@@ -23,9 +24,20 @@ enum Action {
 };
 typedef std::vector<Action> ActionVect;
 
+inline std::string action_to_string(Action a) {
+    static std::string tmp_action_to_string[] = {
+            "NOOP"
+            ,"LEFT"
+            ,"RIGHT"
+            ,"UP"
+            ,"RESET"
+            ,"RANDOM"
+    };
+    assert (a >= 0 && a <= 6);
+    return tmp_action_to_string[a];
+}
 
-
-/** A simple wrapper around an Atari screen. */
+/** ------------------------------- A simple wrapper around a Blobby screen. */
 class BlobbyScreen {
 public:
     BlobbyScreen(int h, int w);
@@ -60,55 +72,6 @@ protected:
 
     std::vector<pixel_t> m_pixels;
 };
-/**
-   This class interfaces ALE with external code for controlling agents.
- */
-class BlobbyInterface {
-public:
-  BlobbyInterface();
-  ~BlobbyInterface();
-
-  // Applies an action to the game and returns the reward. It is the
-  // user's responsibility to check if the game has ended and reset
-  // when necessary - this method will keep pressing buttons on the
-  // game over screen.
-  reward_t act(Action action);
-
-  // Indicates if the game has ended.
-  bool game_over();
-
-  // Resets the game, but not the full system.
-  void reset_game();
-
-  // connect
-  void connect();
-
-  // Returns the vector of legal actions. This should be called only
-  // after the rom is loaded.
-  ActionVect getLegalActionSet();
-
-  // Returns the vector of the minimal set of actions needed to play
-  // the game.
-  ActionVect getMinimalActionSet();
-
-  // Returns the frame number since the loading of the ROM
-  int getFrameNumber();
-
-  // Returns the frame number since the start of the current episode
-  int getEpisodeFrameNumber();
-
-  // Returns the current game screen
-  const BlobbyScreen &getScreen();
-
- public:
-  //std::auto_ptr<OSystem> theOSystem;
-  //std::auto_ptr<Settings> theSettings;
-  //std::auto_ptr<RomSettings> romSettings;
-  //std::auto_ptr<StellaEnvironment> environment;
-  int max_num_frames; // Maximum number of frames for each episode
-
-};
-
 
 inline BlobbyScreen::BlobbyScreen(int h, int w):
   m_rows(h),
@@ -121,18 +84,15 @@ inline BlobbyScreen::BlobbyScreen(const BlobbyScreen &rhs):
   m_rows(rhs.m_rows),
   m_columns(rhs.m_columns),
   m_pixels(rhs.m_pixels) {
-
 }
 
 inline BlobbyScreen& BlobbyScreen::operator=(const BlobbyScreen &rhs) {
-
   m_rows = rhs.m_rows;
   m_columns = rhs.m_columns;
 
-  // We rely here on the std::vector constructor doing something sensible (i.e. not wasteful)
-  // inside its assignment operator
+  // We rely here on the std::vector constructor doing something sensible
+  // (i.e. not wasteful) inside its assignment operator
   m_pixels = rhs.m_pixels;
-
   return *this;
 }
 
@@ -160,5 +120,50 @@ inline pixel_t* BlobbyScreen::getRow(int r) const {
   assert (r >= 0 && r < m_rows);
   return const_cast<pixel_t*>(&m_pixels[r * m_columns]);
 }
+
+
+/** ------------------------ Interface for external code controlling agents. */
+class BlobbyInterface {
+
+ public:
+  BlobbyInterface();
+  ~BlobbyInterface();
+
+  // Applies an action to the game and returns the reward. It is the
+  // user's responsibility to check if the game has ended and reset
+  // when necessary - this method will keep pressing buttons on the
+  // game over screen.
+  reward_t act(Action action);
+
+  // Indicates if the game has ended.
+  bool game_over();
+
+  // Resets the game, but not the full system.
+  void reset_game();
+
+  // connect
+  void connect();
+
+  // Returns the vector of legal actions. This should be called only
+  // after the rom is loaded.
+  ActionVect getLegalActionSet();
+
+  // Returns the frame number since the loading of the ROM
+  int getFrameNumber();
+
+  // Returns the frame number since the start of the current episode
+  int getEpisodeFrameNumber();
+
+  // Returns the current game screen
+  const BlobbyScreen &getScreen();
+
+ public:
+  //std::auto_ptr<OSystem> theOSystem;
+  //std::auto_ptr<Settings> theSettings;
+  //std::auto_ptr<RomSettings> romSettings;
+  //std::auto_ptr<StellaEnvironment> environment;
+  int max_num_frames; // Maximum number of frames for each episode
+
+};
 
 #endif

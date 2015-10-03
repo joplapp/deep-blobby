@@ -4,7 +4,7 @@ project(dqn)
 option(CPU_ONLY "Use CPU only for Caffe" ON)
 option(USE_CUDNN "Use cuDNN for Caffe" OFF)
 
-set(CAFFE ~/dqn/dqn/caffe/)
+set(CAFFE ~/code/hackzurich/15/caffe/)
 
 include_directories(${CAFFE}include)
 include_directories(${CAFFE}build/src)
@@ -22,7 +22,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -march=native")
 target_link_libraries(dqn caffe)
 target_link_libraries(dqn glog)
 target_link_libraries(dqn gflags)
-target_link_libraries(dqn ale)
 
 if(APPLE)
   include_directories(/System/Library/Frameworks/vecLib.framework/Versions/Current/Headers)

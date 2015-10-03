@@ -2,9 +2,9 @@
 #include <iostream>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
-#include "blobby_interface.hpp"
 #include "prettyprint.hpp"
 #include "dqn.hpp"
+#include "blobby_interface.cpp"
 
 DEFINE_bool(gpu, false, "Use GPU to brew Caffe");
 DEFINE_bool(gui, false, "Open a GUI window");
@@ -105,13 +105,13 @@ int main(int argc, char** argv) {
     caffe::Caffe::set_mode(caffe::Caffe::CPU);
   }
 
-  BlobbyInterface blobby();
+  BlobbyInterface blobby;
 
   // Load the ROM file
   blobby.connect();
 
   // Get the vector of legal actions
-  const auto legal_actions = blobby.getMinimalActionSet();
+  const auto legal_actions = blobby.getLegalActionSet();
 
   dqn::DQN dqn(legal_actions, FLAGS_solver, FLAGS_memory, FLAGS_gamma);
   dqn.Initialize();
