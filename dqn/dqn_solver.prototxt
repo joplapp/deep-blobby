@@ -1,4 +1,4 @@
-net: "dqn.prototxt"
+net: "/home/johannes/dqn/dqn/dqn.prototxt"
 solver_type: ADADELTA
 momentum: 0.95
 base_lr: 0.2

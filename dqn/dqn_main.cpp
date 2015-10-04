@@ -9,7 +9,7 @@
 DEFINE_bool(gpu, false, "Use GPU to brew Caffe");
 DEFINE_bool(gui, false, "Open a GUI window");
 DEFINE_string(rom, "breakout.bin", "Atari 2600 ROM to play");
-DEFINE_string(solver, "dqn_solver.prototxt", "Solver parameter file (*.prototxt)");
+DEFINE_string(solver, "/home/johannes/dqn/dqn/dqn_solver.prototxt", "Solver parameter file (*.prototxt)");
 DEFINE_int32(memory, 500000, "Capacity of replay memory");
 DEFINE_int32(explore, 1000000, "Number of iterations needed for epsilon to reach 0.1");
 DEFINE_double(gamma, 0.95, "Discount factor of future rewards (0,1]");
@@ -109,6 +109,8 @@ int main(int argc, char** argv) {
 
   // Load the ROM file
   blobby.connect();
+  sleep(1);
+  blobby.getScreen();
 
   // Get the vector of legal actions
   const auto legal_actions = blobby.getLegalActionSet();

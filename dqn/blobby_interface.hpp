@@ -7,6 +7,8 @@
 #include <cassert>
 #include <cstring>
 
+#include <sio_client.h>
+
 static const std::string Version = "0.1";
 
 
@@ -144,6 +146,8 @@ class BlobbyInterface {
   // connect
   void connect();
 
+    static void receiveMsg(sio::event ev);
+
   // Returns the vector of legal actions. This should be called only
   // after the rom is loaded.
   ActionVect getLegalActionSet();
@@ -163,6 +167,9 @@ class BlobbyInterface {
   //std::auto_ptr<RomSettings> romSettings;
   //std::auto_ptr<StellaEnvironment> environment;
   int max_num_frames; // Maximum number of frames for each episode
+
+    sio::client h;
+    std::vector<double> vector;
 
 };
 

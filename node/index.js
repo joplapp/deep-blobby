@@ -19,7 +19,8 @@ ioC.on('connection', function(socket){
   console.log('a user connected');
   attachMovementEvents(socket)
 
-  socket.on('get frame', function(){
+  socket.on('frame', function(){
+    console.log('getframe')
     drawGame()
     socket.emit('frame', JSON.stringify(getPixelArray()))
   })
@@ -50,6 +51,7 @@ httpF.listen(3000, function(){
 
 function attachMovementEvents(socket){
   socket.on('act', function(msg){
+    console.log('act', msg)
     if(msg === 'LEFT') {
       playerInput[LEFT_PLAYER].left = 1;
     } else if(msg === 'RIGHT') {
