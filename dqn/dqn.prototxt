@@ -111,13 +111,28 @@ layers {
     negative_slope: 0.01
   }
 }
+#layers {
+#  name: "ip2_layer"
+#  type: INNER_PRODUCT
+#  bottom: "ip1"
+#  top: "q_values"
+#  inner_product_param {
+#    num_output: 18
+#    weight_filler {
+#      type: "gaussian"
+#      std: 0.01
+#    }
+#  }
+#}
 layers {
-  name: "ip2_layer"
-  type: INNER_PRODUCT
+  name: "conv10_layer"
+  type: CONVOLUTION
   bottom: "ip1"
   top: "q_values"
-  inner_product_param {
+  convolution_param {
     num_output: 18
+    kernel_size: 1
+    stride: 1
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -131,7 +146,7 @@ layers {
   bottom: "filter"
   top: "filtered_q_values"
   eltwise_param {
-    operation: PROD
+   operation: PROD
   }
 }
 layers {

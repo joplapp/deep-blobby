@@ -27,7 +27,8 @@ bool BlobbyInterface::game_over() {
 void BlobbyInterface::reset_game() {}
 void BlobbyInterface::connect() {
     std::cout << "asdfdd";
-    h.connect("http://127.0.0.1:3000");
+    h.connect("http://127.0.0.1:3001");
+    sleep(1);
     //h.socket()->emit("act", "LEFT");
 }
 
@@ -46,25 +47,21 @@ int BlobbyInterface::getFrameNumber() {}
 int BlobbyInterface::getEpisodeFrameNumber() {}
 
 void BlobbyInterface::receiveMsg(sio::event ev) {
-    string str = ev.get_message()->get_string();
-    LOG(string);
 
 }
 
 const BlobbyScreen& BlobbyInterface::getScreen() {
     string t = "adsf";
     std::cout << "send";
-    LOG("send")
     h.socket()->emit("frame", t);
 
-    string str = "";
-    h.socket()->on("frame", sio::socket::event_listener_aux(
-            [&](string const& name, sio::message::ptr const& data, bool isAck,sio::message::list &ack_resp){
-               str = data->get_string();
-                LOG(str)
+    h.socket()->on("frame", sio::socket::event_listener([&](sio::event& e){
+                std::vector<int> pic;
+                sio::message::list ms = e.get_messages();
+                for (size_t i = 0; i < ms.size(); ++i)
+                    std::cout << ms[i];
             }));
 
-
-    while(vector.size()==0) sleep(1);
+sleep(5);
     return BlobbyScreen(5,5);
 }

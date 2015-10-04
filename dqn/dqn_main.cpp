@@ -109,7 +109,6 @@ int main(int argc, char** argv) {
 
   // Load the ROM file
   blobby.connect();
-  sleep(1);
   blobby.getScreen();
 
   // Get the vector of legal actions
