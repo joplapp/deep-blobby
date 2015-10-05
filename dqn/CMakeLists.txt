@@ -4,7 +4,7 @@ project(dqn)
 option(CPU_ONLY "Use CPU only for Caffe" ON)
 option(USE_CUDNN "Use cuDNN for Caffe" OFF)
 
-set(CAFFE ~/dqn/dqn/caffe/)
+set(CAFFE ~/caffe2/)
 set(SOCKETIO ~/socketio_cpp/)
 
 include_directories(${SOCKETIO}build/include)

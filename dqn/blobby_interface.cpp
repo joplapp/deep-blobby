@@ -21,7 +21,7 @@ reward_t BlobbyInterface::act(Action action) {
 }
 
 bool BlobbyInterface::game_over() {
-    return true;
+    return false;
 }
 
 void BlobbyInterface::reset_game() {}
